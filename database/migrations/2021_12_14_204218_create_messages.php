@@ -15,7 +15,7 @@ class CreateMessages extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('from_id')->nullable();
             $table->foreignId('conversation_id')->nullable();
             $table->foreignId('reply_id')->nullable();
             $table->longText('message');

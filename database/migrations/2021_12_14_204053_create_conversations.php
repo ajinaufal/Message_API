@@ -15,8 +15,8 @@ class CreateConversations extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from');
-            $table->foreignId('to');
+            $table->foreignId('one');
+            $table->foreignId('two');
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });

@@ -44,14 +44,14 @@ class User extends Authenticatable
 
     public function get_user_from()
     {
-        return $this->hasMany(conversations::class,'from');
+        return $this->hasMany(conversations::class,'one');
     }
     public function get_user_to()
     {
-        return $this->hasMany(conversations::class,'to');
+        return $this->hasMany(conversations::class,'two');
     }
     public function get_message()
     {
-        return $this->hasMany(messages::class,'user_id');
+        return $this->hasMany(messages::class,'from_id');
     }
 }

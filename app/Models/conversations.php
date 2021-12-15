@@ -10,18 +10,18 @@ class conversations extends Model
     use HasFactory;
     protected $fillable = [
         'id',
-        'from',
-        'to',
+        'one',
+        'two',
         'updated_at',
         'created_at',
     ];
     public function get_user_from()
     {
-        return $this->belongsTo(User::class, 'from');
+        return $this->belongsTo(User::class, 'one');
     }
     public function get_user_to()
     {
-        return $this->belongsTo(User::class, 'to');
+        return $this->belongsTo(User::class, 'two');
     }
     public function get_message()
     {

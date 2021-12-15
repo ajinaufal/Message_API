@@ -11,17 +11,17 @@ class messages extends Model
     protected $table = 'messages';
     protected $fillable = [
         'id',
+        'from_id',
+        'conversation_id',
+        'reply_id',
         'message',
         'seen',
-        'deleted',
-        'conversation_id',
-        'user_id',
         'updated_at',
         'created_at',
     ];
     public function get_user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'from_id');
     }
     public function get_conversation()
     {
