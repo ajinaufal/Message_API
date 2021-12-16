@@ -95,17 +95,14 @@ class MessageController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'to' => 'required',
-            'message' => 'required',
         ]);
 
         $errors = $validator->errors();
         $message = [
             'to' => $errors->first('to'),
-            'message' => $errors->first('message'),
         ];
         $form_error = [
             'to' => $errors->has('to'),
-            'message' => $errors->has('message'),
         ];
 
         if ($validator->fails()) {
@@ -141,7 +138,7 @@ class MessageController extends Controller
             }
 
             if ($conversations->count() != 0) {
-                foreach ($conversations->first()->get_message->orderBy('created_at', 'DESC')->get() as $key => $message) {
+                foreach ($conversations->first()->get_message as $key => $message) {
                     $chat[$key] = [
                         'user' => $message->from_id,
                         'message' => $message->message,
@@ -150,7 +147,7 @@ class MessageController extends Controller
                 }
             }
         }
-        if ($conversations->count == 0) {
+        if ($conversations->count() == 0) {
             return response()->json([
                 'message'       => 'error',
                 'check_data'    => $conversations,
@@ -165,18 +162,12 @@ class MessageController extends Controller
     public function ConvListAll(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'to' => 'required',
-            'message' => 'required',
         ]);
 
         $errors = $validator->errors();
         $message = [
-            'to' => $errors->first('to'),
-            'message' => $errors->first('message'),
         ];
         $form_error = [
-            'to' => $errors->has('to'),
-            'message' => $errors->has('message'),
         ];
         
         if ($validator->fails()) {
@@ -188,9 +179,22 @@ class MessageController extends Controller
         } else {
             $from = auth()->user()->id;
             $conversations = conversations::where('one', $from)->orwhere('two', $from)->get();
+            foreach ($conversations as $key => $value) {
+                if ($value->one == $from) {
+                    $user_chat = $value->two;
+                }elseif ($value->two == $from) {
+                    $user_chat = $value->one;
+                }
+                $data[$key] = [
+                    'from' => $user_chat,
+                    'last message' => $value->get_message->last()->message,
+                    'last message time' => $value->get_message->last()->created_at
+                ];
+            }
+            
             return response()->json([
                 'message' => 'successful',
-                'data' => $conversations,
+                'data' => $data,
             ], 200);
         }
     }

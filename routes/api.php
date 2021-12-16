@@ -20,9 +20,11 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-// Route::group(['middleware' => ['auth:sanctum']], function () {
-    // Route::post('logout', [AuthController::class, 'logout']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('logout', [AuthController::class, 'logout']);
     Route::post('send_message', [MessageController::class, 'SendMessage']);
-// });
-// Route::post('login', [AuthController::class, 'login']);
-// Route::post('register', [AuthController::class, 'register']);
+    Route::post('open_message', [MessageController::class, 'ConvListTwo']);
+    Route::get('view_message', [MessageController::class, 'ConvListAll']);
+});
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
